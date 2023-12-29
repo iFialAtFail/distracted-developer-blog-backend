@@ -47,6 +47,11 @@ You can then execute your native executable with: `./target/distracted-developer
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
 
+## Docker build
+
+```shell script
+mvn install -Dquarkus.container-image.build=true
+```
 ## Related Guides
 
 - REST resources for Hibernate ORM with Panache ([guide](https://quarkus.io/guides/rest-data-panache)): Generate Jakarta REST resources for your Hibernate Panache entities and repositories

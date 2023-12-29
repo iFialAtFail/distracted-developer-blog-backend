@@ -1,0 +1,17 @@
+services:
+  backend:
+    image: mmanle01/distracted-developer-blog:latest
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - db
+    ports:
+      - "3022:8080"
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: hibernate
+      POSTGRES_PASSWORD: hibernate
