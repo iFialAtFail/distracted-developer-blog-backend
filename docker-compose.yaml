@@ -1,16 +1,16 @@
 services:
-  backend:
-    image: mmanle01/distracted-developer-blog:latest
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    depends_on:
-      - db
-    volumes:
-#     This says take the application.properties on the host machine relative to the docker-compose.yaml
-#     and share it with the container at /config/application.properties
-      - ./config/application.properties:/config/application.properties
-    ports:
-      - "3022:8080"
+#  backend:
+#    image: mmanle01/distracted-developer-blog:latest
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    depends_on:
+#      - db
+#    volumes:
+##     This says take the application.properties on the host machine relative to the docker-compose.yaml
+##     and share it with the container at /config/application.properties
+#      - ./config/application.properties:/deployments/config/application.properties
+#    ports:
+#      - "3022:8080"
   db:
     image: postgres
     ports:
