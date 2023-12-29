@@ -52,6 +52,13 @@ If you want to learn more about building native executables, please consult http
 ```shell script
 mvn install -Dquarkus.container-image.build=true
 ```
+
+## Docker push
+
+```cli
+quarkus build -Dquarkus.container-image.push=true
+```
+
 ## Related Guides
 
 - REST resources for Hibernate ORM with Panache ([guide](https://quarkus.io/guides/rest-data-panache)): Generate Jakarta REST resources for your Hibernate Panache entities and repositories

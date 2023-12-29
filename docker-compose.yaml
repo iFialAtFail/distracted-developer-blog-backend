@@ -5,6 +5,10 @@ services:
       - "host.docker.internal:host-gateway"
     depends_on:
       - db
+    volumes:
+#     This says take the application.properties on the host machine relative to the docker-compose.yaml
+#     and share it with the container at /config/application.properties
+      - ./config/application.properties:/config/application.properties
     ports:
       - "3022:8080"
   db:
@@ -12,6 +16,18 @@ services:
     ports:
       - "5432:5432"
     restart: unless-stopped
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: hibernate
       POSTGRES_PASSWORD: hibernate
+
+  dozzle:
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 3023:8080
+volumes:
+  db:
+    driver: local
