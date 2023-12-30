@@ -39,6 +39,19 @@ class BlogResourceTest implements WithAssertions {
         assertThat(response.summaries()).containsExactly(BlogSummaryDto.fromEntity(blog));
     }
 
+    @Test
+    void shouldReturnNoBlogs() {
+        BlogSummariesDto response = given()
+                .when().get(BlogResource.BLOG_PATH)
+                .then()
+                .contentType(ContentType.JSON)
+                .statusCode(200)
+                .extract().as(BlogSummariesDto.class);
+
+        assertThat(response).isNotNull();
+        assertThat(response.summaries()).isEmpty();
+    }
+
     @Transactional
     Blog createAndPersistBlogInTransaction() {
         Blog blog = new Blog();
