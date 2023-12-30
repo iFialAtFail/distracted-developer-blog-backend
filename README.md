@@ -59,6 +59,12 @@ mvn install -Dquarkus.container-image.build=true
 quarkus build -Dquarkus.container-image.push=true
 ```
 
+## Liquibase Commands
+
+```dockerfile
+mvn liquibase:rollback -Dliquibase.rollbackCount=1
+```
+
 ## Related Guides
 
 - REST resources for Hibernate ORM with Panache ([guide](https://quarkus.io/guides/rest-data-panache)): Generate Jakarta REST resources for your Hibernate Panache entities and repositories

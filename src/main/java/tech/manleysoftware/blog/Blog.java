@@ -3,16 +3,21 @@ package tech.manleysoftware.blog;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 public class Blog extends PanacheEntity {
 
+    @Lob
     @NotBlank(message = "Content may not be blank")
     String content;
+
+    @NotBlank(message = "Summary may not be blank")
+    String summary;
 
     @NotBlank(message = "Title may not be blank")
     String title;
@@ -22,7 +27,7 @@ public class Blog extends PanacheEntity {
 
     @Column(unique = true)
     @NotNull
-    LocalDateTime datePosted;
+    ZonedDateTime datePosted;
 
     public String getContent() {
         return content;
@@ -30,6 +35,14 @@ public class Blog extends PanacheEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     public String getTitle() {
@@ -48,11 +61,11 @@ public class Blog extends PanacheEntity {
         this.author = author;
     }
 
-    public LocalDateTime getDatePosted() {
+    public ZonedDateTime getDatePosted() {
         return datePosted;
     }
 
-    public void setDatePosted(LocalDateTime datePosted) {
+    public void setDatePosted(ZonedDateTime datePosted) {
         this.datePosted = datePosted;
     }
 
@@ -64,14 +77,16 @@ public class Blog extends PanacheEntity {
         Blog blog = (Blog) o;
 
         if (!content.equals(blog.content)) return false;
+        if (!summary.equals(blog.summary)) return false;
         if (!title.equals(blog.title)) return false;
         if (!author.equals(blog.author)) return false;
-        return datePosted.equals(blog.datePosted);
+        return datePosted.isEqual(blog.datePosted);
     }
 
     @Override
     public int hashCode() {
         int result = content.hashCode();
+        result = 31 * result + summary.hashCode();
         result = 31 * result + title.hashCode();
         result = 31 * result + author.hashCode();
         result = 31 * result + datePosted.hashCode();
@@ -82,6 +97,7 @@ public class Blog extends PanacheEntity {
     public String toString() {
         return "Blog{" +
                 "content='" + content + '\'' +
+                ", summary='" + summary + '\'' +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", datePosted=" + datePosted +

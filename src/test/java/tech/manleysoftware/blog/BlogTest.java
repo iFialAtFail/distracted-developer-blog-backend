@@ -6,7 +6,7 @@ import jakarta.persistence.PersistenceException;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -17,7 +17,7 @@ class BlogTest {
     @Test
     void shouldCreateBlogPost() {
         Blog blog = new Blog();
-        LocalDateTime postTime = LocalDateTime.now();
+        ZonedDateTime postTime = ZonedDateTime.now();
         String blogTitle = "Blog Title";
         String blogContent = "Blog content string";
         String author = "Michael Manley";
@@ -37,7 +37,7 @@ class BlogTest {
     @TestTransaction
     void shouldSaveAndReturnBlogEntity() {
         Blog blog = new Blog();
-        LocalDateTime postTime = LocalDateTime.now();
+        ZonedDateTime postTime = ZonedDateTime.now();
         String blogTitle = "Blog Title";
         String blogContent = "Blog content string";
         String author = "Michael Manley";
@@ -77,25 +77,27 @@ class BlogTest {
     @Test
     @TestTransaction
     void shouldEnforceUniqueDateTimeToPreventSpam() {
-        LocalDateTime localDateTime = LocalDateTime.now();
+        ZonedDateTime localDateTime = ZonedDateTime.now();
         Blog blog = createBasicBlog(localDateTime);
         blog.persistAndFlush();
         Blog duplicateBlog = createBasicBlog(localDateTime);
         assertThatThrownBy(duplicateBlog::persistAndFlush).isInstanceOf(PersistenceException.class);
     }
 
-    private static Blog createBasicBlog(LocalDateTime date) {
+    private static Blog createBasicBlog(ZonedDateTime date) {
         Blog blog = new Blog();
         String blogTitle = "Blog Title";
         String blogContent = "Blog content string";
         String author = "Michael Manley";
-        LocalDateTime postTime = LocalDateTime.now();
+        String summary = "My Summary";
+        ZonedDateTime postTime = ZonedDateTime.now();
 
 
         blog.setContent(blogContent);
         blog.setTitle(blogTitle);
         blog.setAuthor(author);
         blog.setDatePosted(date != null ? date : postTime);
+        blog.setSummary(summary);
         return blog;
     }
 
