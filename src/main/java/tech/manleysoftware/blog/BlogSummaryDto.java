@@ -4,16 +4,26 @@ import java.time.ZonedDateTime;
 
 public class BlogSummaryDto {
 
+    Long id;
     String title;
     String summary;
     String author;
     ZonedDateTime postDate;
 
-    public BlogSummaryDto(String title, String summary, String author, ZonedDateTime postDate) {
+    public BlogSummaryDto(Long id, String title, String summary, String author, ZonedDateTime postDate) {
+        this.id = id;
         this.title = title;
         this.summary = summary;
         this.author = author;
         this.postDate = postDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public BlogSummaryDto() {
@@ -53,6 +63,7 @@ public class BlogSummaryDto {
 
     public static BlogSummaryDto fromEntity(Blog blog) {
         return new BlogSummaryDto(
+                blog.id,
                 blog.getTitle(),
                 blog.getSummary(),
                 blog.getAuthor(),
@@ -67,6 +78,7 @@ public class BlogSummaryDto {
 
         BlogSummaryDto that = (BlogSummaryDto) o;
 
+        if (!id.equals(that.id)) return false;
         if (!title.equals(that.title)) return false;
         if (!summary.equals(that.summary)) return false;
         if (!author.equals(that.author)) return false;
@@ -75,7 +87,8 @@ public class BlogSummaryDto {
 
     @Override
     public int hashCode() {
-        int result = title.hashCode();
+        int result = id.hashCode();
+        result = 31 * result + title.hashCode();
         result = 31 * result + summary.hashCode();
         result = 31 * result + author.hashCode();
         result = 31 * result + postDate.hashCode();
@@ -85,7 +98,8 @@ public class BlogSummaryDto {
     @Override
     public String toString() {
         return "BlogSummaryDto{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", summary='" + summary + '\'' +
                 ", author='" + author + '\'' +
                 ", postDate=" + postDate +
