@@ -52,8 +52,27 @@ class BlogResourceTest implements WithAssertions {
         assertThat(response.summaries()).isEmpty();
     }
 
-    @Transactional
-    Blog createAndPersistBlogInTransaction() {
+    @Test
+    void shouldReturnCreatedBlog() {
+        Blog blog = createBlog();
+        BlogDto requestBody = BlogDto.fromEntity(blog);
+        BlogDto response = given()
+                .when()
+                    .body(requestBody)
+                    .contentType(ContentType.JSON)
+                    .post(BlogResource.BLOG_PATH)
+                .then()
+                    .statusCode(201)
+                    .contentType(ContentType.JSON)
+                    .extract().as(BlogDto.class);
+
+        assertThat(response).isNotNull();
+
+        BlogDto expected = BlogDto.fromEntity(blog);
+        assertThat(response).isEqualTo(expected);
+    }
+
+    Blog createBlog() {
         Blog blog = new Blog();
         blog.setAuthor("Mike");
         LocalDateTime localDateTime = LocalDateTime.of(2020, Month.JANUARY, 26, 4, 4);
@@ -62,6 +81,13 @@ class BlogResourceTest implements WithAssertions {
         blog.setContent("This is my large LOB content");
         blog.setTitle("Title");
         blog.setSummary("This is the summary to be displayed on the blog cards");
+
+        return blog;
+    }
+
+    @Transactional
+    Blog createAndPersistBlogInTransaction() {
+        Blog blog = createBlog();
         blog.persistAndFlush();
         return blog;
     }
