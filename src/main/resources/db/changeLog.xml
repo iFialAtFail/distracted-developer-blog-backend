@@ -43,4 +43,17 @@
             </column>
         </addColumn>
     </changeSet>
+
+
+    <changeSet id="3" author="Mike M">
+        <createSequence sequenceName="app_user_seq" startValue="1" incrementBy="50"/>
+        <createTable tableName="app_user">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="password" type="text"/>
+            <column name="role" type="text"/>
+            <column name="username" type="text"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

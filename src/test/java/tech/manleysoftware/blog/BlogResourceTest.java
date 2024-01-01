@@ -7,11 +7,13 @@ import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tech.manleysoftware.user.User;
 
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
@@ -57,6 +59,7 @@ class BlogResourceTest implements WithAssertions {
         Blog blog = createBlog();
         BlogDto requestBody = BlogDto.fromEntity(blog);
         BlogDto response = given()
+                .auth().preemptive().basic("admin", "admin")
                 .when()
                     .body(requestBody)
                     .contentType(ContentType.JSON)

@@ -1,10 +1,10 @@
 package tech.manleysoftware.blog;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.UriInfo;
 import org.jboss.resteasy.reactive.RestResponse;
 
 import java.util.List;
@@ -18,6 +18,7 @@ public class BlogResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
     @Transactional
     public BlogSummariesDto getBlogSummaries() {
         List<Blog> blogs = Blog.listAll();
@@ -28,8 +29,9 @@ public class BlogResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("admin")
     @Transactional
-    public RestResponse<BlogDto> postNewBlogPost(BlogDto blogDto, @Context UriInfo uriInfo) {
+    public RestResponse<BlogDto> postNewBlogPost(BlogDto blogDto) {
         Blog blog = new Blog();
         blog.setSummary(blogDto.getSummary());
         blog.setContent(blogDto.getContent());
@@ -40,7 +42,5 @@ public class BlogResource {
         blog.persistAndFlush();
 
         return RestResponse.ResponseBuilder.create(RestResponse.Status.CREATED, BlogDto.fromEntity(blog)).build();
-//        return RestResponse.created(uriInfo.getAbsolutePathBuilder().path(Long.toString(blog.id)).build());
-//        return Response.created(BlogDto.fromEntity(blog)).build();
     }
 }
