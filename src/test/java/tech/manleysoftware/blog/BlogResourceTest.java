@@ -7,13 +7,11 @@ import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tech.manleysoftware.user.User;
 
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
@@ -30,28 +28,28 @@ class BlogResourceTest implements WithAssertions {
     @Test
     void shouldReturnBlogs() {
         Blog blog = createAndPersistBlogInTransaction();
-        BlogSummariesDto response = given()
+        BlogsDto response = given()
                 .when().get(BlogResource.BLOG_PATH)
                 .then()
                 .contentType(ContentType.JSON)
                 .statusCode(200)
-                .extract().as(BlogSummariesDto.class);
+                .extract().as(BlogsDto.class);
 
         assertThat(response).isNotNull();
-        assertThat(response.summaries()).containsExactly(BlogSummaryDto.fromEntity(blog));
+        assertThat(response.blogs()).containsExactly(BlogDto.fromEntity(blog));
     }
 
     @Test
     void shouldReturnNoBlogs() {
-        BlogSummariesDto response = given()
+        BlogsDto response = given()
                 .when().get(BlogResource.BLOG_PATH)
                 .then()
                 .contentType(ContentType.JSON)
                 .statusCode(200)
-                .extract().as(BlogSummariesDto.class);
+                .extract().as(BlogsDto.class);
 
         assertThat(response).isNotNull();
-        assertThat(response.summaries()).isEmpty();
+        assertThat(response.blogs()).isEmpty();
     }
 
     @Test

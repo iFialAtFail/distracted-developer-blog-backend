@@ -20,10 +20,10 @@ public class BlogResource {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Transactional
-    public BlogSummariesDto getBlogSummaries() {
+    public BlogsDto getBlogs() {
         List<Blog> blogs = Blog.listAll();
-        List<BlogSummaryDto> blogSummaries = blogs.stream().map(BlogSummaryDto::fromEntity).toList();
-        return new BlogSummariesDto(blogSummaries);
+        List<BlogDto> blogDtos = blogs.stream().map(BlogDto::fromEntity).toList();
+        return new BlogsDto(blogDtos);
     }
 
     @POST
